@@ -72,3 +72,23 @@ function stop_event (){
   	  }
 	})
 }
+
+
+
+function delete_event (){
+	$.ajax({
+	  type:'DELETE', 
+	  url: "/log_events/1", 
+	  mimeType:"multipart/form-data",
+	  contentType: 'application/json',
+	  cache: true,
+	  dataType: "text",
+	  success: function(data){
+	  	console.log(data)
+	  	get_events ()
+	  },
+	  error: function(data){
+	    
+  	  }
+	})
+}

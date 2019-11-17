@@ -9,17 +9,18 @@ class LogEvent
       step :persist!
       step :notify!
 
-
       def find_model!(options, params:, **)
         options['model'] = LogEvent.find(params[:id])
       end
 
       def persist!(_options, params:, model:, **)
-        # model.update_attributes(params[:recipient][:journey].permit!)
-        # model.save
-        # model.update_attribute(:updated_by, 'API')
+        unless params[:update_type] == "stop_event"
+          model.update_attributes(params[:log_event].permit!)
+        else
+           model.update_attribute(:sign_out_time, DateTime.now)
+        end
+        model.save
       end
-
       def notify!(options, model:, **)
         options['result.notify'] = Rails.logger.info("Log Event Updated #{model.inspect}.")
       end
