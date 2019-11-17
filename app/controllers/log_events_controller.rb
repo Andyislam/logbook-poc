@@ -9,4 +9,9 @@ class LogEventsController < ApplicationController
 		run LogEvent::Operation::Create, params: {current_user: current_user}
         render json: result.success? ? { log_event: result['model'] } : result['result.contract.default'].errors
 	end
+
+	def update
+		run LogEvent::Operation::Update
+        render json: result.success? ? { log_event: result['model'] } : result['result.contract.default'].errors
+	end
 end

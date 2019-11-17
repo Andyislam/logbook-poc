@@ -1,0 +1,13 @@
+<% if current_user.log_events %>
+	<% unless current_user.log_events.last.sign_out_time %>
+		
+	<% else %>
+	<% end %>
+<% else %>
+<% end %>
+
+
+<h1> TESTMEEEEEE </h1>
+
+<button onclick='start_event()'>start</button>
+<button onclick='stop_event()'>stop</button>

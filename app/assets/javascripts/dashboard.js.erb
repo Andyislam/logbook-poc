@@ -1,0 +1,74 @@
+
+get_events ()
+
+
+
+function get_events(){
+	$.ajax({
+	  type:'GET', 
+	  url: "/log_events", 
+	  mimeType:"multipart/form-data",
+	  contentType: false,
+	  cache: true,
+	  processData:false,
+	  dataType: "text",
+	  success: function(data){
+	  	var data = jQuery.parseJSON(data);
+	  	$("#events_table tbody").empty()
+	  	$.each(data['log_events'], function(key, val){
+	  		console.log(val)
+	  		$("#events_table tbody").append(
+	  			'<tr>\
+	  			<td>'+val.sign_in_time+'</td>\
+	  			<td>'+val.sign_out_time+'</td>\
+	  			<td>'+val.updated_at+'</td>\
+	  			</tr>'
+	  		)
+	  	})
+
+	  },
+	  error: function(data){
+	    
+	  }
+	})
+}
+
+
+
+function start_event (){
+	$.ajax({
+	  type:'POST', 
+	  url: "/log_events", 
+	  mimeType:"multipart/form-data",
+	  contentType: false,
+	  cache: true,
+	  processData:false,
+	  dataType: "text",
+	  success: function(data){
+	  	console.log(data)
+	  	get_events ()
+	  },
+	  error: function(data){
+	    
+	  }
+	})
+}
+
+
+function stop_event (){
+	$.ajax({
+	  type:'PUT', 
+	  url: "/log_events/1?update_type=stop_event", 
+	  mimeType:"multipart/form-data",
+	  contentType: 'application/json',
+	  cache: true,
+	  dataType: "text",
+	  success: function(data){
+	  	console.log(data)
+	  	get_events ()
+	  },
+	  error: function(data){
+	    
+  	  }
+	})
+}

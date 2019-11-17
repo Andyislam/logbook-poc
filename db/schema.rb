@@ -18,7 +18,6 @@ ActiveRecord::Schema.define(version: 2019_11_17_103121) do
   create_table "log_events", force: :cascade do |t|
     t.datetime "sign_in_time"
     t.datetime "sign_out_time"
-    t.text "comments"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id"
