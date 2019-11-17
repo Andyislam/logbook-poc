@@ -1,0 +1,7 @@
+<% if user_signed_in? %>
+	<%= render 'dashboard/container' %>
+<% else %>
+	<p>
+		Please sign in to view your dashboard.
+	</p>
+<% end %>
