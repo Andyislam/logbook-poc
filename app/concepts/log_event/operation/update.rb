@@ -4,7 +4,6 @@ class LogEvent
   module Operation
     # Log Event Operation Update
     class Update < Trailblazer::Operation
-
       step :find_model!
       step :persist!
       step :notify!
@@ -14,13 +13,14 @@ class LogEvent
       end
 
       def persist!(_options, params:, model:, **)
-        unless params[:update_type] == "stop_event"
-          model.update_attributes(params[:log_event].permit!)
+        if params[:update_type] == 'stop_event'
+          model.update_attribute(:sign_out_time, DateTime.now)
         else
-           model.update_attribute(:sign_out_time, DateTime.now)
+          model.update_attributes(params[:log_event].permit!)
         end
         model.save
       end
+
       def notify!(options, model:, **)
         options['result.notify'] = Rails.logger.info("Log Event Updated #{model.inspect}.")
       end

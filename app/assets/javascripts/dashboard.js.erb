@@ -14,21 +14,28 @@ function get_events(){
 	  dataType: "text",
 	  success: function(data){
 	  	var data = jQuery.parseJSON(data);
+	  	console.log(data)
 	  	$("#events_table tbody").empty()
 	  	$.each(data['log_events'], function(key, val){
-	  		console.log(val)
 	  		$("#events_table tbody").append(
 	  			'<tr>\
 	  			<td>'+val.sign_in_time+'</td>\
 	  			<td>'+val.sign_out_time+'</td>\
 	  			<td>'+val.updated_at+'</td>\
+	  			<td><button onclick="delete_event('+val.id+')">delete</button></td>\
 	  			</tr>'
 	  		)
 	  	})
 
-	  },
-	  error: function(data){
-	    
+	  	if (data['active_event'] == null){
+	  		$('#start_btn').show()
+	  		$('#stop_btn').hide()
+	  	} else {
+	  		console.log(data['active_event'].id)
+	  		$('#start_btn').hide()
+	  		$('#stop_btn').attr('data-eventid', data['active_event'].id).show()
+	  	}
+
 	  }
 	})
 }
@@ -45,11 +52,7 @@ function start_event (){
 	  processData:false,
 	  dataType: "text",
 	  success: function(data){
-	  	console.log(data)
 	  	get_events ()
-	  },
-	  error: function(data){
-	    
 	  }
 	})
 }
@@ -58,27 +61,23 @@ function start_event (){
 function stop_event (){
 	$.ajax({
 	  type:'PUT', 
-	  url: "/log_events/1?update_type=stop_event", 
+	  url: "/log_events/"+ $('#stop_btn').attr('data-eventid') +"?update_type=stop_event", 
 	  mimeType:"multipart/form-data",
 	  contentType: 'application/json',
 	  cache: true,
 	  dataType: "text",
 	  success: function(data){
-	  	console.log(data)
 	  	get_events ()
-	  },
-	  error: function(data){
-	    
-  	  }
+	  }
 	})
 }
 
 
 
-function delete_event (){
+function delete_event (id){
 	$.ajax({
 	  type:'DELETE', 
-	  url: "/log_events/1", 
+	  url: "/log_events/"+id, 
 	  mimeType:"multipart/form-data",
 	  contentType: 'application/json',
 	  cache: true,
@@ -86,9 +85,6 @@ function delete_event (){
 	  success: function(data){
 	  	console.log(data)
 	  	get_events ()
-	  },
-	  error: function(data){
-	    
-  	  }
+	  }
 	})
 }

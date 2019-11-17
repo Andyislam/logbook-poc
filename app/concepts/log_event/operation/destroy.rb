@@ -4,7 +4,6 @@ class LogEvent
   module Operation
     # Log Event Operation Delete
     class Destroy < Trailblazer::Operation
-
       step :find_model!
       step :persist!
       step :notify!
@@ -16,8 +15,9 @@ class LogEvent
       def persist!(_options, params:, model:, **)
         model.destroy
       end
+
       def notify!(options, model:, **)
-        options['result.notify'] = Rails.logger.info("Log Event Deleted")
+        options['result.notify'] = Rails.logger.info('Log Event Deleted')
       end
     end
   end
