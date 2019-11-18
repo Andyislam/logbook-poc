@@ -16,7 +16,7 @@ class LogEvent
         if params[:update_type] == 'stop_event'
           model.update_attribute(:sign_out_time, DateTime.now)
         else
-          model.update_attributes(params[:log_event].permit!)
+          model.update_attributes(params[:log_event].permit!.to_h)
         end
         model.save
       end

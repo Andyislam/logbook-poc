@@ -2,6 +2,27 @@
 get_events ()
 
 
+$('body').on('click','.edit_icon', function(){
+
+	if ($(this).parent().siblings('.date_input').is(":visible")) {
+		console.log($(this).parent().siblings('.date_input'))
+		$(this).parent().siblings('.date_input').hide()
+		$(this).text('EDIT')
+		update_event(this)
+
+	} else {
+		$(this).parent().siblings('.date_input').show()
+		$(this).text('UPDATE')
+	}
+
+})
+
+
+function datetimeUpdated(){
+	console.log("called")
+	$(event.target).parent().siblings().children('.update_btn').show()
+	$(event.target).parent().siblings('.editable_field').html(moment($(event.target).val()).format('YYYY-MM-DD ,[&nbsp;] LT ')).addClass('updated_field')
+}
 
 function get_events(){
 	$.ajax({
@@ -17,12 +38,33 @@ function get_events(){
 	  	console.log(data)
 	  	$("#events_table tbody").empty()
 	  	$.each(data['log_events'], function(key, val){
+	  		if (val.sign_out_time != null){
+	  			sign_out_time = moment(val.sign_out_time).format('YYYY-MM-DD ,[&nbsp;] LT ')
+	  		} else {
+	  			sign_out_time = ''
+	  		}
 	  		$("#events_table tbody").append(
-	  			'<tr>\
-	  			<td>'+val.sign_in_time+'</td>\
-	  			<td>'+val.sign_out_time+'</td>\
-	  			<td>'+val.updated_at+'</td>\
-	  			<td><button onclick="delete_event('+val.id+')">delete</button></td>\
+	  			'<tr data-eventid="'+val.id+'">\
+	  			<td> \
+	  				<input onchange="datetimeUpdated()" class="date_input" type="datetime-local" value="'+ moment(val.sign_in_time).format('YYYY-MM-DDThh:mm') +'">\
+	  				<div class="field_container">\
+	  				<p class="editable_field" data-field-type="sign_in_time">'+ moment(val.sign_in_time).format('YYYY-MM-DD ,[&nbsp;] LT ') +'</p> \
+	  				<button class="edit_icon"> EDIT </button>\
+	  				</div>\
+	  			</td>\
+	  			<td>\
+	  				<input onchange="datetimeUpdated()" class="date_input" type="datetime-local" value="'+ moment(val.sign_out_time).format('YYYY-MM-DDThh:mm') +'">\
+	  				<div class="field_container">\
+	  				<p class="editable_field" data-field-type="sign_out_time">'+ moment(val.sign_out_time).format('YYYY-MM-DD ,[&nbsp;] LT ') +'</p> \
+	  				<button class="edit_icon"> EDIT </button>\
+	  				</div>\
+	  			</td>\
+	  			<td>\
+	  				'+ moment(val.updated_at).format('YYYY-MM-DD ,[&nbsp;] LT ') +'\
+	  			</td>\
+	  			<td >\
+	  				<button onclick="delete_event('+val.id+')">delete</button>\
+	  			</td>\
 	  			</tr>'
 	  		)
 	  	})
@@ -40,6 +82,32 @@ function get_events(){
 	})
 }
 
+
+function update_event(element){
+	var fieldType = $(element).siblings('.editable_field').attr("data-field-type")
+	var eventid = $(element).parent().parent().parent().attr('data-eventid')
+
+	if ($(element).siblings('.editable_field').attr("data-field-type") == "sign_in_time") {
+		var dataObject = { 'log_event': { 'sign_in_time': $(element).parent().siblings().val() } };
+	} else {
+		var dataObject = { 'log_event': { 'sign_out_time': $(element).parent().siblings().val() } };
+	}
+	
+
+	$.ajax({
+	  type:'PUT', 
+	  url: "/log_events/"+ eventid, 
+	  mimeType:"multipart/form-data",
+	  contentType: 'application/json',
+	  data: JSON.stringify(dataObject),
+	  cache: true,
+	  dataType: "text",
+	  success: function(data){
+	  	get_events ()
+	  }
+	})
+	
+}
 
 
 function start_event (){

@@ -1,0 +1,20 @@
+.date_input, .update_btn {
+	display: none;
+}
+
+.updated_field {
+	color: red;
+}
+
+#events_table th , #events_table td{
+	border: solid 1px black;
+	padding: 5px 20px;
+	text-align: left;
+}
+
+#stop_btn, #start_btn {
+    margin: 20px;
+    height: 30px;
+    border-radius: 5px;
+
+}

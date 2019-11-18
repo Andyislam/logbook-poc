@@ -1,10 +1,13 @@
 <%= javascript_include_tag 'dashboard' %>
+<%= stylesheet_link_tag 'dashboard' %>
 
+<button id='start_btn' onclick='start_event()'>Start Log</button>
+<button id='stop_btn' data-eventid='' onclick='stop_event()'>Stop Log</button>
 
 <table id='events_table'>
 	<thead>
 		<th>
-			Logged in at
+			Logged in at 
 		</th>
 		<th>
 			Logged out at
@@ -23,6 +26,3 @@
 
 
 
-
-<button id='start_btn' onclick='start_event()'>start</button>
-<button id='stop_btn' data-eventid='' onclick='stop_event()'>stop</button>

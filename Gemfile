@@ -33,6 +33,12 @@ gem 'devise'
 
 gem 'jquery-rails'
 
+# used to format datetime on front end
+gem 'momentjs-rails'
+
+# font awesome icons
+gem 'font-awesome-rails'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
