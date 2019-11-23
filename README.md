@@ -1,24 +1,9 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Ruby Version 2.6.5
+Rails Version 6.0.1
 
-Things you may want to cover:
+Database Postgres
 
-* Ruby version
+This is a simple time logger application that users can register, check in and out. A user may also edit their logged times. This is a work in progress and will eventually just be an API app. A front end application created in vue will be posted eventually on this github account. This application uses Trailblazer as a framework. For more information on trailblazer rails, visit https://github.com/trailblazer/trailblazer-rails. 
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
